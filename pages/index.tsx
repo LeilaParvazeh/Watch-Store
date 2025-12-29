@@ -1,78 +1,107 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
+import { Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import Header from "./Components/layout/Header";
+import { products } from "./types/product";
+import Footer from "./Components/layout/Footer";
+import CustomerReviews from "./Components/reviews/customerReviews";
+import { useEffect, useState } from "react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export default function Home() {
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black`}
-    >
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the index.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className={`${geistSans.className} ${geistMono.className} min-h-screen items-center justify-center text-gray-900 dark:text-gray-100 bg-zinc-50 font-sans dark:bg-black`}>
+  
+      <Header />
+
+      <div className="relative w-full h-[700px] md:h-[800px]">
+        <Image src="/image-1.jpg" alt="" fill className="object-cover" priority />
+
+        <div className=" inline-block">
+          <div className=" skew-x-[-18deg] bg-red-600 px-6 py-2 shadow-lg transition-all duration-300 hover:skew-x-[-22deg] hover:bg-red-700 animate-[fadeIn_0.8s_ease-out_forwards]">
+            <span className=" block skew-x-[18deg] text-white font-semibold text-sm tracking-[0.35em] select-none">WATCH STORE</span>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs/pages/getting-started?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className=" absolute top-40 right-9 items-center justify-center flex flex-col text-white bg-black/5">
+          <h1 className=" text-4xl font-bold mb-4">The Watch Everyone Desires!</h1>
+          <p className=" text-lg max-w-xl text-center">Discover the best products with the best prices</p>
         </div>
-      </main>
+
+      </div>
+
+      <section className="mt-20 md:mt-52">
+        <div className=" text-center mb-10">
+          <p className=" text-2xl leading-10">Discover</p>
+          <p className=" text-5xl italic">Our <span className=" text-6xl">Collections</span></p>
+
+        </div>
+
+        <Swiper
+          modules={[Autoplay]}
+          autoplay={{ delay: 5000 }}
+          loop
+          spaceBetween={30}
+          breakpoints={{
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 1 },
+            1024: { slidesPerView: 1 },
+          }}
+          className="w-full max-w-6xl mx-auto"
+        >
+          {products.map((product) => (
+            <SwiperSlide key={product.id}>
+              <div className=" flex flex-col md:flex-row items-center gap-10 md:gap-20 p-8">
+                <div className="md:w-1/2">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className=" w-full h-[600px] object-contain rounded-lg md:h-[800px]"
+                  />
+                </div>
+                <div className="md:w-1/2 flex flex-col gap-6">
+                  <p className="uppercase text-gray-500 text-lg">Collection</p>
+                  <h2 className="text-4xl md:text-5xl font-bold py-4 mb-3">{product.brand}</h2>
+                  <p className="text-gray-700 mb-10">{product.description}</p>
+                  <Link href="/products">
+                    <button className="bg-yellow-400 text-white px-6 py-4 rounded-4xl hover:bg-yellow-500 transition cursor-pointer">Shop the watches</button>
+                  </Link>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      <div className=" flex flex-col lg:flex-row items-center gap-10 mt-20 justify-center">
+
+        <img src="/image-2.png" className={`w-[400px] h-72 transition-all duration-700 rounded-full ease-out delay-300 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-40"} `} />
+
+        <img src="/image-3.png" className={`w-[400px] h-72 transition-all duration-700 rounded-full ease-out delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-40"}`} />
+
+        <img src="/image-4.png" className={`w-[400px] h-72 transition-all duration-700 rounded-full ease-out delay-300 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-40"}`} />
+      </div>
+
+      <CustomerReviews />
+      <Footer />
+
     </div>
-  );
+  )
 }
